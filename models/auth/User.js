@@ -21,14 +21,6 @@ const UserSchema = new Schema({
     required: true,
     select: false,
   },
-  followers: {
-    type: Array,
-    default: [],
-  },
-  following: {
-    type: Array,
-    default: [],
-  },
   liveCountry: {
     type: String,
     default: "",
