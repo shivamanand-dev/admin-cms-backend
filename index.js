@@ -16,6 +16,7 @@ const port = process.env.PORT;
 // Routes
 app.use(express.json());
 app.use("/auth", require("./routes/auth/auth"));
+app.use("/profile", require("./routes/profile/profile"));
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);

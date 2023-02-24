@@ -22,7 +22,7 @@ const UserSchema = new Schema({
     select: false,
   },
   liveCountry: {
-    type: String,
+    type: Array,
     default: "",
   },
   profileImageUrl: {
