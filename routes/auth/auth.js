@@ -5,6 +5,7 @@ const { body, validationResult } = require("express-validator");
 const User = require("../../models/auth/User");
 const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
+const keyGenrator = require("../../services/keyGenrator");
 // const deEncryptAll = require("../../services/deEncrypt");
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -40,6 +41,8 @@ router.post(
       var salt = bcrypt.genSaltSync(10);
       var hashedPassword = bcrypt.hashSync(password, salt);
 
+      const api_key = await keyGenrator();
+
       //   Create User
       user = await User.create({
         name,
@@ -47,6 +50,7 @@ router.post(
         username,
         password: hashedPassword,
         profileImageUrl,
+        api_key,
       });
 
       //   create jwt token
@@ -71,7 +75,7 @@ router.post("/login", async (req, res) => {
   try {
     let success = false;
 
-    // Dencrypt Coming Data
+    // Decrypt Coming Data
     // const deEncryptedDetails = deEncryptAll(req.body);
 
     //   Destructure request body
