@@ -29,11 +29,6 @@ const UserSchema = new Schema({
     type: String,
     default: "",
   },
-  api_key: {
-    type: String,
-    unique: true,
-    required: true,
-  },
 });
 
 module.exports = mongoose.model("user", UserSchema);
