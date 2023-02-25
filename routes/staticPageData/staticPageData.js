@@ -3,9 +3,12 @@ const getUser = require("../../middleware/getUser");
 const StaticWebPageData = require("../../models/staticWebPageData/StaticWebPageData");
 const router = express.Router();
 
-router.get("/", getUser, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const webSiteData = await StaticWebPageData.find({ user: req.user.id });
+    console.log(req.header("_id"));
+    const webSiteData = await StaticWebPageData.find({
+      user: req.header("_id"),
+    });
     res.status(200).send(webSiteData);
   } catch (error) {
     console.log(error);
