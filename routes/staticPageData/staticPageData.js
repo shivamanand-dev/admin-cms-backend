@@ -5,7 +5,6 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    console.log(req.header("_id"));
     const webSiteData = await StaticWebPageData.find({
       user: req.header("_id"),
     });
