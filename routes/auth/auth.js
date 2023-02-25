@@ -71,7 +71,7 @@ router.post("/login", async (req, res) => {
   try {
     let success = false;
 
-    // Dencrypt Coming Data
+    // Decrypt Coming Data
     // const deEncryptedDetails = deEncryptAll(req.body);
 
     //   Destructure request body
