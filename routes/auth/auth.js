@@ -3,8 +3,12 @@ const router = express.Router();
 const { body, validationResult } = require("express-validator");
 // const deEncryptUserDetails = require("../../middleware/deEncryptUserDetails");
 const User = require("../../models/auth/User");
+const ApiKeySchema = require("../../models/api-keys/Api-key");
 const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
+const authenticate = require("../../middleware/auth");
+const dotenv = require("dotenv");
+dotenv.config();
 // const deEncryptAll = require("../../services/deEncrypt");
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -111,6 +115,16 @@ router.post("/login", async (req, res) => {
 
     success = true;
     res.status(200).json({ success: success, userDetails, authToken });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ success: false, message: "Server error occur" });
+  }
+});
+
+router.post("/api-key", authenticate, async (req, res) => {
+  try {
+    const key = await ApiKeySchema.generateKey(req.user.id);
+    res.send({ key });
   } catch (error) {
     console.error(error);
     res.status(500).send({ success: false, message: "Server error occur" });

@@ -1,0 +1,51 @@
+const mongoose = require("mongoose");
+const crypto = require("crypto");
+const bcrypt = require("bcryptjs");
+const { promisify } = require("util");
+const randomBytes = promisify(crypto.randomBytes);
+
+const { Schema } = mongoose;
+
+const ApiKeySchema = new Schema({
+  key: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+    // required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    // required: true,
+  },
+});
+
+ApiKeySchema.pre("save", async function (next) {
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(this.key, salt);
+    this.key = hash;
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+ApiKeySchema.statics.generateKey = async function (userId) {
+  try {
+    const rawBytes = await randomBytes(16);
+    const key = rawBytes.toString("hex");
+    const apiKey = new this({ key, createdBy: userId });
+    await apiKey.save();
+    return key;
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports = mongoose.model("apiKeySchema", ApiKeySchema);
