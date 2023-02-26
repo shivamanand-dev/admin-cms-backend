@@ -8,8 +8,8 @@ console.log(JWT_SECRET);
 const authenticate = (req, res, next) => {
   try {
     const token = req.header("authToken");
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded;
+    const data = jwt.verify(token, JWT_SECRET);
+    req.user = data;
     next();
   } catch (error) {
     res.status(401).send({ error: "Authentication failed" });

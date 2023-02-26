@@ -3,7 +3,7 @@ const router = express.Router();
 const { body, validationResult } = require("express-validator");
 // const deEncryptUserDetails = require("../../middleware/deEncryptUserDetails");
 const User = require("../../models/auth/User");
-const ApiKeySchema = require("../../models/api-keys/Api-key");
+const ApiKey = require("../../models/api-keys/Api-key");
 const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
 const authenticate = require("../../middleware/auth");
@@ -123,7 +123,7 @@ router.post("/login", async (req, res) => {
 
 router.post("/api-key", authenticate, async (req, res) => {
   try {
-    const key = await ApiKeySchema.generateKey(req.user.id);
+    const key = await ApiKey.generateKey(req.user.id);
     res.send({ key });
   } catch (error) {
     console.error(error);

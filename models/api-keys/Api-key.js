@@ -6,7 +6,7 @@ const randomBytes = promisify(crypto.randomBytes);
 
 const { Schema } = mongoose;
 
-const ApiKeySchema = new Schema({
+const ApiKey = new Schema({
   key: {
     type: String,
     required: true,
@@ -24,7 +24,7 @@ const ApiKeySchema = new Schema({
   },
 });
 
-ApiKeySchema.pre("save", async function (next) {
+ApiKey.pre("save", async function (next) {
   try {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(this.key, salt);
@@ -36,7 +36,7 @@ ApiKeySchema.pre("save", async function (next) {
   }
 });
 
-ApiKeySchema.statics.generateKey = async function (userId) {
+ApiKey.statics.generateKey = async function (userId) {
   try {
     const rawBytes = await randomBytes(16);
     const key = rawBytes.toString("hex");
@@ -48,4 +48,4 @@ ApiKeySchema.statics.generateKey = async function (userId) {
   }
 };
 
-module.exports = mongoose.model("apiKeySchema", ApiKeySchema);
+module.exports = mongoose.model("apiKey", ApiKey);
