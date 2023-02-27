@@ -124,7 +124,6 @@ router.post("/login", async (req, res) => {
 
 router.post("/api-key", authenticate, async (req, res) => {
   try {
-    console.log(req.user.user);
     const key = await ApiKey.generateKey(req.user.user.id);
     res.send({ key });
   } catch (error) {

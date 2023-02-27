@@ -1,13 +1,14 @@
 const express = require("express");
 const getUser = require("../../middleware/getUser");
+const getUserIdUsingApiKey = require("../../middleware/getUserIdUsingApi");
 const StaticWebPageData = require("../../models/staticWebPageData/StaticWebPageData");
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/", getUserIdUsingApiKey, async (req, res) => {
   try {
-    console.log(req.header("_id"));
+    console.log(req.user.id);
     const webSiteData = await StaticWebPageData.find({
-      user: req.header("_id"),
+      user: req.user.id,
     });
     res.status(200).send(webSiteData);
   } catch (error) {
