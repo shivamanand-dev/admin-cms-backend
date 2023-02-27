@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const crypto = require("crypto");
-const bcrypt = require("bcryptjs");
 const { promisify } = require("util");
+const hashCrypto = require("../../utils/hashCrypto");
 const randomBytes = promisify(crypto.randomBytes);
 
 const { Schema } = mongoose;
@@ -15,19 +15,19 @@ const ApiKey = new Schema({
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
-    // required: true,
+    required: true,
   },
   createdAt: {
     type: Date,
     default: Date.now,
-    // required: true,
+    required: true,
   },
 });
 
 ApiKey.pre("save", async function (next) {
   try {
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(this.key, salt);
+    // const salt = await bcrypt.genSalt(10);
+    const hash = hashCrypto(this.key);
     this.key = hash;
 
     next();

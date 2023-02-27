@@ -8,6 +8,7 @@ const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
 const authenticate = require("../../middleware/auth");
 const dotenv = require("dotenv");
+const getUserIdUsingApiKey = require("../../middleware/getUserIdUsingApi");
 dotenv.config();
 // const deEncryptAll = require("../../services/deEncrypt");
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -123,7 +124,8 @@ router.post("/login", async (req, res) => {
 
 router.post("/api-key", authenticate, async (req, res) => {
   try {
-    const key = await ApiKey.generateKey(req.user.id);
+    console.log(req.user.user);
+    const key = await ApiKey.generateKey(req.user.user.id);
     res.send({ key });
   } catch (error) {
     console.error(error);
