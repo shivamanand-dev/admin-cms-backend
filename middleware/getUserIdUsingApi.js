@@ -8,7 +8,7 @@ const getUserIdUsingApiKey = async (req, res, next) => {
 
   const user = await ApiKey.findOne({ hashedKey });
 
-  req.user = { id: user._id.toString() };
+  req.user = { id: user.createdBy.toString() };
 
   next();
 };
