@@ -1,9 +1,9 @@
 var CryptoJS = require("crypto-js");
 
-const secretKey = "thisIsLegendaryApp";
+const { SECRET_KEY_CRYPTO_JS } = process.env;
 
 const deEncrypt = (data) => {
-  var bytes = CryptoJS.AES.decrypt(data, secretKey);
+  var bytes = CryptoJS.AES.decrypt(data, SECRET_KEY_CRYPTO_JS);
   return bytes.toString(CryptoJS.enc.Utf8);
 };
 
