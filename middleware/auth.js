@@ -3,8 +3,6 @@ const dotenv = require("dotenv");
 dotenv.config();
 const { JWT_SECRET } = process.env;
 
-console.log(JWT_SECRET);
-
 const authenticate = (req, res, next) => {
   try {
     const token = req.header("authToken");
