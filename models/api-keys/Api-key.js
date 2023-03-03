@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const crypto = require("crypto");
 const { promisify } = require("util");
-const { encrypt } = require("../../utils/encrypt");
-// const encryptAll = require("../../utils/encrypt");
 const randomBytes = promisify(crypto.randomBytes);
 
 const { Schema } = mongoose;
@@ -27,11 +25,6 @@ const ApiKey = new Schema({
 
 ApiKey.pre("save", async function (next) {
   try {
-    // const salt = await bcrypt.genSalt(10);
-    const hash = encrypt(this.key);
-
-    this.key = hash;
-
     next();
   } catch (error) {
     next(error);
