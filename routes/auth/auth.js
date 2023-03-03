@@ -1,16 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
-// const deEncryptUserDetails = require("../../middleware/deEncryptUserDetails");
 const User = require("../../models/auth/User");
 const ApiKey = require("../../models/api-keys/Api-key");
 const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
-const authenticate = require("../../middleware/auth");
-const dotenv = require("dotenv");
-const getUserIdUsingApiKey = require("../../middleware/getUserIdUsingApi");
-dotenv.config();
-// const deEncryptAll = require("../../services/deEncrypt");
+const getUser = require("../../middleware/getUser");
+const { deEncrypt } = require("../../utils/deEncrypt");
+
 const JWT_SECRET = process.env.JWT_SECRET;
 
 router.post(
@@ -122,14 +119,24 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post("/api-key", authenticate, async (req, res) => {
-  try {
-    const key = await ApiKey.generateKey(req.user.user.id);
-    res.send({ key });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ success: false, message: "Server error occur" });
-  }
-});
+router
+  .post("/api-key", getUser, async (req, res) => {
+    try {
+      const key = await ApiKey.generateKey(req.user.id);
+      res.send({ key });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ success: false, message: "Server error occur" });
+    }
+  })
+  .get("/api-key", getUser, async (req, res) => {
+    const data = await ApiKey.findOne({ createdBy: req.user.id });
+
+    const deEncryptKey = deEncrypt(data.key);
+
+    res.status(200).send({ key: deEncryptKey });
+  });
+
+// router.get()
 
 module.exports = router;
