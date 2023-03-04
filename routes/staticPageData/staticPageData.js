@@ -6,8 +6,7 @@ const router = express.Router();
 
 router.get("/", getUserIdUsingApiKey, async (req, res) => {
   try {
-    console.log(req.user.id);
-    const webSiteData = await StaticWebPageData.find({
+    const webSiteData = await StaticWebPageData.findOne({
       user: req.user.id,
     });
     res.status(200).send(webSiteData);

@@ -9,30 +9,23 @@ const StaticWebPageData = new Schema({
     required: true,
   },
   homePage: {
-    type: Array,
-    default: [
-      {
-        navbar: [
-          { logo: "AppStrom" },
-          {
-            navOptions: [
-              "Home",
-              "Pages",
-              "Portfolio",
-              "Blog",
-              "Shop",
-              "Elements",
-            ],
-          },
-        ],
-      },
-      {
-        hero: [
-          { heroBackgroundImage: "", heroSecTitle: "" },
-          { heroSlogan: "" },
-        ],
-      },
-    ],
+    type: Object,
+    default: {
+      navbar: [
+        { logo: "AppStrom" },
+        {
+          navOptions: [
+            "Home",
+            "Pages",
+            "Portfolio",
+            "Blog",
+            "Shop",
+            "Elements",
+          ],
+        },
+      ],
+      hero: [{ heroBackgroundImage: "", heroSecTitle: "" }, { heroSlogan: "" }],
+    },
   },
 });
 
