@@ -7,6 +7,7 @@ const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
 const getUser = require("../../middleware/getUser");
 const { deEncrypt } = require("../../utils/deEncrypt");
+const StaticWebPageData = require("../../models/staticWebPageData/StaticWebPageData");
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -60,8 +61,14 @@ router.post(
 
       const authToken = jwt.sign(data, JWT_SECRET);
 
+      await StaticWebPageData.create({
+        user: data.user.id,
+      });
+
+      const key = await ApiKey.generateKey(data.user.id);
+
       success = true;
-      res.json({ success, user, authToken });
+      res.json({ success, user, authToken, key });
     } catch (error) {
       console.error(error);
       res.status(500).send({ message: "Server error occur" });
@@ -132,9 +139,7 @@ router
   .get("/api-key", getUser, async (req, res) => {
     const data = await ApiKey.findOne({ createdBy: req.user.id });
 
-    const deEncryptKey = deEncrypt(data.key);
-
-    res.status(200).send({ key: deEncryptKey });
+    res.status(200).send({ key: data.key });
   });
 
 // router.get()

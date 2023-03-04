@@ -21,7 +21,7 @@ router.post("/saveData", getUser, async (req, res) => {
     let success = false;
 
     const staticWebPageData = await StaticWebPageData.create({
-      homePage: req.body,
+      data: req.body,
       user: req.user.id,
     });
 

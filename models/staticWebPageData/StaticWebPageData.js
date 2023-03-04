@@ -8,23 +8,15 @@ const StaticWebPageData = new Schema({
     ref: "user",
     required: true,
   },
-  homePage: {
+  data: {
     type: Object,
     default: {
-      navbar: [
-        { logo: "AppStrom" },
-        {
-          navOptions: [
-            "Home",
-            "Pages",
-            "Portfolio",
-            "Blog",
-            "Shop",
-            "Elements",
-          ],
-        },
-      ],
-      hero: [{ heroBackgroundImage: "", heroSecTitle: "" }, { heroSlogan: "" }],
+      navbar: {
+        logo: "https://firebasestorage.googleapis.com/v0/b/cms-studio-9741c.appspot.com/o/logo%2FLogo%20Appstrom.png?alt=media&token=5def69c1-cc5d-4960-80b8-37cae01fd574",
+
+        navOptions: ["Home", "Pages", "Portfolio", "Blog", "Shop", "Elements"],
+      },
+      hero: { heroBackgroundImage: "", heroSecTitle: "", heroSlogan: "" },
     },
   },
 });
