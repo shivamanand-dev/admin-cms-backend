@@ -16,17 +16,18 @@ router.get("/", getUserIdUsingApiKey, async (req, res) => {
   }
 });
 
-router.post("/saveData", getUser, async (req, res) => {
+router.put("/saveData/:id", getUser, async (req, res) => {
   try {
-    let success = false;
-
-    const staticWebPageData = await StaticWebPageData.create({
+    await StaticWebPageData.findByIdAndUpdate(req.params.id, {
       data: req.body,
+    });
+
+    const staticWebPageData = await StaticWebPageData.findOne({
       user: req.user.id,
     });
 
     success = true;
-    res.status(200).send({ success, staticWebPageData });
+    res.status(200).send({ staticWebPageData });
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: "Internal Server Error" });
